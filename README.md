@@ -50,7 +50,7 @@ Installing setuptools, pip, wheel...done.
 ```
 
 activate the virtual environment. Activating the virtual environment is done everytime you will do anything with the application since this is the environemnt where is will run. Take note of this command
-```
+```bash
 $ source django-env/bin/activate
 ```
 
@@ -133,11 +133,143 @@ Successfully installed Pillow-8.4.0 gunicorn-20.1.0 psycopg2-2.9.2
 ```
 
 ### create the django app
-```
+```bash
 $ django-admin startproject blogsite
 ```
-deploy the files in this repository into the blogsite
+to deploy the files in this repository into the blogsite, we will nedd install `wget` and `unzip` since it is not installed by default
 
+```bash
+# yum install wget unzip
+```
+now go to the  blogsite and download the project
+
+```bash
+$ cd blogsite
+$ wget https://github.com/kirbykirbydev/kirby-agudelo-portfolio-site/archive/refs/heads/master.zip
+$ unzip kirby-agudelo-portfolio-site-master.zip
+```
+
+this will create a subdirectory `kirby-agudelo-portfolio-site-master`. go to the directory and copy everything back to the upper directory. then delete this later.
+
+```bash
+$ cd kirby-agudelo-portfolio-site-master
+$ cp -rf * ../.
+$ cd ..
+```
+
+delete source files
+```bash
+$ rm -rf kirby-agudelo-portfolio-site-master kirby-agudelo-portfolio-site-master.zip
+```
+
+**system variables**
+
+the aplication loads some configuration via system envoronment variables. these can be executed in the current bash environment
+```bash
+export blog_debug_mode=True
+export blog_secret_key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+export blog_db_engine=django.db.backends.postgresql_psycopg2
+export blog_db_host=XXXXXXXXX
+export blog_db_user=XXXXXXXXXXX
+export blog_db_name=XXXXXXXXXXX
+export blog_db_pass=XXXXXXXXXXX
+export blog_media_root=XXXXXXXXXXXXXXXXXXXXXXXXXX
+export blog_static_root=XXXXXXXXXXXXXXXXXX
+export blog_static_url=XXXXXXXXXXXXXXXXXXXXX
+```
+
+there are many ways to load load configuration variables to the systsm but the shortest way is to just execute them via bash.
+
+these commands can be saved in an executable bash script ( for example `blog_config.sh`) 
+and then run the script using the source command ( to load the variables directly to the current environment
+```bash
+$ source blog_config.sh
+```
+
+finally test if the site will run
+
+```bash
+$ python manage.py runserver 127.0.0.1:8000
+```
+
+in production mode `gunicorn` is used to run the site. i have created a script to execute this
+
+```bash
+#!/bin/bash
+
+
+WORKING_DIR=/your/working/directory
+LOG_FILE=$WORKING_DIR/blogsite.log
+PID_FILE=$WORKING_DIR/gunicorn_blogsite.pid
+
+source ./load_blogsite_cfg.sh
+
+cd $WORKING_DIR
+source django-env/bin/activate
 cd blogsite
+gunicorn blogsite.wsgi:application --bind 0.0.0.0:8000 --daemon --log-file=$LOG_FILE --pid=$PID_FILE
+```
 
-... todo
+**configuring nginx for proxy and static files**
+
+configuring proxy and static files
+currently the website is usinig nginx as the proxy web server but it should not matter which proxy server is used.
+
+config file /etc/nginx/nginx.conf
+in nginx the only important configuration so far is what port to listen to and what is the server name
+
+```
+
+http {
+
+  # ...
+  # other configs here
+  # ...
+  server {
+
+        listen       80;
+        listen       [::]:80;
+        server_name  www.kirbyonweb.dev ;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+  }
+
+  # ...
+  # other configs here
+  # ...
+
+}
+```
+
+
+and then the specific configuration in /etc/nginx/default.d/blogsite.conf
+
+
+```
+root /where/your/static/files/are;
+
+# all url paths that start with /static/ are forwarded to load the files in the root
+location ~ ^/static/ {
+    rewrite ^/static/(.+)$ /$1 last;
+}
+
+# the blog site starts with /blog
+location /blog {
+    proxy_pass http://127.0.0.1:8000 ;
+
+}
+
+#the website home has no url path
+location ~ ^/$ {
+    proxy_pass http://127.0.0.1:8000 ;
+}
+```
