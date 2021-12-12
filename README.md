@@ -146,7 +146,7 @@ now go to the  blogsite and download the project
 ```bash
 $ cd blogsite
 $ wget https://github.com/kirbykirbydev/kirby-agudelo-portfolio-site/archive/refs/heads/master.zip
-$ unzip kirby-agudelo-portfolio-site-master.zip
+$ unzip master.zip
 ```
 
 this will create a subdirectory `kirby-agudelo-portfolio-site-master`. go to the directory and copy everything back to the upper directory. then delete this later.
