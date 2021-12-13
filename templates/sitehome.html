@@ -11,7 +11,7 @@
 }
 #blog-items .blog-list-item .content {
   border: 1px solid #CCC;
-  height: 420px;
+  height: 436px;
 }
 #blog-items {
   height: auto;
@@ -56,6 +56,8 @@
   line-height: 18px;
   overflow: hidden;
   margin-top: 10px;
+  margin-bottom: 10px;
+  min-height: 90px;
 }
 
 #blog-items .days-ago {
@@ -76,7 +78,15 @@
   padding: 2px;
   margin-right: 2px;
   background-color: #5D6BA7;
-  
+}
+
+
+#blog-items a.readmore {
+  text-decoration: none;
+}
+
+#blog-items a.readmore:hover {
+  text-decoration: underline;
 }
 
 #blog-items .tag a, #blog-items .tag a:visited,  #blog-items .tag a:any-link {
@@ -86,12 +96,94 @@
 }
 
 
+#home-header {
+
+  background-image: url(http://dev.kirbyonweb.ddd/static/assets/images/_MG_4789.jpg);
+  background-size: cover;
+  background-position: center center;
+  height: 450px;
+  color: #fff;
+}
+
+#home-header .container {
+  background-color: rgb(93, 107, 167, 0.2);
+  padding: 100px 0px;
+  min-width: 100%;
+  max-width: 100%;
+  text-align: center;
+  height: 450px;
+  line-height: 100px;
+}
+
+#home-header .main-title {
+  font-size: 50px;
+  font-weight: bold;
+  line-height: 75px;
+}
+
+#home-header .sub-title {
+  font-size: 25px;
+  line-height: 36px;
+  font-weight: bold;
+}
+
+@media(min-width: 576px){
+  #home-header .main-title {
+    font-size: 50px;
+    font-weight: bold;
+  }
+}
+
+@media(min-width: 768px){
+  #home-header .main-title {
+    font-size: 80px;
+    font-weight: bold;
+    line-height: 110px;
+  }  
+}
+
+@media(min-width: 992px){
+  #home-header .main-title {
+    font-size: 90px;
+    line-height: 130px;
+    font-weight: bold;
+  }    
+}
+
+@media(min-width: 1200px){
+  #home-header .main-title {
+    font-size: 100px;
+    font-weight: bold;
+    line-height: 100px;
+  }
+
+  #home-header .sub-title {
+    font-size: 40px;
+    line-height: 70px;
+    font-weight: bold;
+  }
+}
+
+
+
+
+
+
+
+
 </style>
+
+<header id="home-header" class="masthead">
+  <div class="container">
+    <div class="main-title">Kirby Agudelo</div>
+    <div class="sub-title">on Web Development</div>
+  </div>
+</header>
 
 <section class="blog-list px-3 py-5 p-md-5">
   <div class="container-md">
     <div id="latest-blogs">
-      <h1>Latest Blogs</h1>
+      <h1>Latest Blog Posts</h1>
     
       <div id="blog-items">
         <ul>
@@ -101,13 +193,13 @@
                 <img class="img-fluid post-thumb " src="http://dev.kirbyonweb.ddd/static/uploads/blog_thumbs/n6VoDDX-rHDFiVXFWfW2EhAmFXJPX8RgECCFap7ryv8nvEZqt.jpeg" alt="image">
               </div>
               <div class="article-detail">
-                <span class="days-ago">5 days ago</span>
+                <span class="days-ago">Published 5 days ago</span>
                 <div class="article-title">this is a blog article with a long titlearticle with a long titlearticle with a long title</div>
                 <div class="blog-tags">
                   <span class="tag"><a href="#">Linux</a></span><span class="tag"><a href="#">Domain Names</a></span><span class="tag"><a href="#">Web Development</a></span>
                 </div>
                 <div class="blog-short-preview">this is the preview for the blog, blah blah. what happened to me today this is the preview for the blog, blah blah. what happened to me today d to me today this is the preview for t preview for the blog, blah blah preview for the blog, blah blah</div>
-                <a href="#" class="readmore">read more</a>
+                <a href="#" class="readmore">read more &rightarrow; </a>
     
     
     
