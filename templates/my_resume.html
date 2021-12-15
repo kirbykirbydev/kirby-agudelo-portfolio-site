@@ -3,7 +3,6 @@
 
 {% block templatecontent %}
 
-
 <style>
   .main-wrapper .resume-container {
     max-width: 820px;
@@ -23,6 +22,13 @@
     flex: 5;
     color: var(--bs-primary);
     font-weight: 900;
+    font-size: 1.4rem;
+  }
+
+  .r-header .my-role {
+    font-size: 1.25em;
+    font-weight: 300;
+    color: #4f4f4f;
   }
 
   div.r-header .address-contact {
@@ -39,6 +45,11 @@
     margin:0px auto ;
   }
 
+  .co-name {
+    font-size: 1rem;
+    text-decoration: underline;
+  }
+
   .skills span.skill {
     background-color: #EEE;
     border: 1px solid #999;
@@ -49,24 +60,27 @@
     cursor: pointer;
   }
 
-  #experience #exp_list {
+  .experience .exp_list {
     padding: 0px;
     list-style: none;
   }
 
   .content .role {
     font-weight: 600;
+    font-size: 1rem;
   }  
 
-  #experience > ul > li  {
+  .experience > ul > li  {
     height: auto;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
     border-bottom: 1px solid #CCC;
     padding-bottom: 10px;
   }
 
   .duty-list {
     list-style: square;
+    padding-top: 10px;
+    padding-left: 13px;
   }
 
   .experience-detail {
@@ -79,28 +93,68 @@
     margin-bottom: 10px;
   }
 
+  .educ .org-picture img {
+    max-width: 120px;
+  }
+
   div.exp-item {
     display: flex;
     flex-direction: column;
+    font-size: 0.9rem;
   }
 
-  #educ img {
-    max-width: 100px;
-  }
-
-  #educ .degree {
-    font-weight: 700;
-    font-size: 1.5rem;
-  }
-
-  #educ .school-name {
-    font-weight: 700;
-    font-size: 1.25rem;
-  }
-  #educ .former{
-    font-size: 1rem;
+  .educ .former{
+    font-size: 0.6rem;
     font-style: italic;
     font-weight:500;
+    color: #666;
+    text-decoration: none;
+  }
+
+
+  .experience-detail .year {
+    display:none;
+  }
+
+  .experience-detail .co-website, .school-addr {
+    font-size: 0.8rem;
+    display: block;
+  }
+  
+  
+  .left-col-year .content {
+    padding-top: 1px;
+  }
+
+  .resume-container h3 {
+    color: var(--bs-primary);
+    font-size: 1.125rem ;
+  }
+
+  .skill-container {
+    margin-bottom: 20px;
+    text-align: justify;
+  }
+
+  .skillname {
+    background-color: #dfe1ed;
+    color: #666 ;
+    padding: 2px;
+    border: solid 1px #CCC;
+    line-height: 2.4rem;
+  }
+
+  @media(max-width: 1199px) {
+    .left-col-year{
+      display: none;
+    }
+
+    .experience-detail .year {
+      display:block;
+      color: #666;
+      font-style: italic;
+      font-size: 0.8rem;
+    }
   }
 
   @media(min-width: 768px) {
@@ -123,6 +177,7 @@
       flex: 2;
       border-left: 1px solid #CCC;
       padding-left: 10px;
+      padding-top: 16px;
     }
   }
 
@@ -178,12 +233,12 @@
       flex-direction: row;
     }
 
-    #experience .year {
+    .experience .year {
       flex : 1;
     }
 
     .experience-detail {
-      flex: 5 ;
+      flex: 8 ;
     }
 
     .main-wrapper .resume-container {
@@ -207,21 +262,6 @@
     .experience-detail .org-picture img{
       max-width: 100%;
     }
-    
-    #educ .degree {
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
-
-    #educ .school-name {
-      font-weight: 700;
-      font-size: 1.25rem;
-    }
-    #educ .former{
-      font-size: 1rem;
-      font-style: italic;
-      font-weight:500;
-    }
   }
 
 </style>
@@ -242,13 +282,19 @@
     </div> 
     <hr>
   
-    <h2>Work Experience</h2>
-    <div id="experience">
-      <ul id="exp_list">
+    <div class="skill-container">
+      <h3>SKILLS</h3>
+      {% for skill in skills_list %}<span class="skillname">{{skill}}</span>&nbsp; {% endfor %}
+    </div>
+    
+
+    <div class="experience">
+      <h3>WORK EXPERIENCE</h3>
+      <ul class="exp_list">
         {% for exp in exp_data %}
         <li>
           <div class="exp-item">
-            <div class="year">
+            <div class="year left-col-year">
               <div class="content">{{exp.year}}</div>
             </div>
             <div class="experience-detail">
@@ -256,10 +302,12 @@
                 <span class="role">{{exp.detail.role}}</span>
                 <div class="organization">
                   <span class="co-name">{{exp.detail.organization}}</span>
-                  <span class="co-description">{{exp.detail.org_desc}}</span>
-                  {% if exp.detail.website %}
+                  {% if exp.detail.website %}                  
                   <span class="co-website"><a href="{{exp.detail.website}}" target="_blank">{{exp.detail.website}}</a></span>
                   {% endif %}
+                </div>
+                <div class="year">
+                  <div class="content">{{exp.year}}</div>
                 </div>
                 <div class="duties">
                   <ul class="duty-list">
@@ -269,7 +317,6 @@
                     </li>
                     {% endfor%}  
                   </ul>
-                  
                 </div>
               </div>
               <div class="org-picture">
@@ -285,19 +332,35 @@
       </ul>
     </div>
 
-    <div id="educ">
-      <h2>Education</h2>
-      <img src="{% static 'assets/images/resume-images/mapua-logo.svg' %}">
-      <div class="educ-details">
-        <div class="degree">Bachelor of Science in Computer Engineering , 1998 - 2003</div>
-        <div class="school-name">Map&uacute;a University (<span class="former">formerly Map&uacute;a Institute of Technology</span>)</div>
-        
-      </div>
+    <div class="educ experience">
+      <h3>EDUCATION</h3>
+      <ul class="exp_list">
+        <li>
+          <div class="exp-item">
+            <div class="year left-col-year">
+              <div class="content">1998 - 2003</div>
+            </div>
+            <div class="experience-detail">
+              <div class="content">
+                <span class="role">Bachelor of Science in Computer Engineering</span>
+                <div class="organization">
+                  <span class="co-name">Map&uacute;a University</span> <span class="former">(formerly Map&uacute;a Institute of Technology)</span>
+                  <span class="school-addr">Intramuros Manila, Philippines</span>
+                  <span class="co-website"><a href="https://www.mapua.edu.ph/" target="_blank">https://www.mapua.edu.ph/</a></span>
+                </div>
+                <div class="year">
+                  <div class="content">1998 - 2003</div>
+                </div>
+              </div>
+              <div class="org-picture">
+                <img src="{% static 'assets/images/resume-images/mapua-logo.svg' %}">
+              </div>
+            </div>
+            
+          </div>
+        </li>
+      </ul>
     </div>
-
   </article>
 </div>
-
-
-
 {% endblock %}

@@ -93,5 +93,10 @@ def view_resume(request):
        },       
     ]
 
+  skills_list = [
+      'HTML', 'CSS', 'Javascript', 'PHP', 'Python', 'Django', 'Bash', 'Jquery', 'React', 'MySQL', 
+    'PostgreSQL', 'Redis', 'Linux', 'Node.js', 'ExpressJS', 'Git', 'SVN', 'OOP', 'MVC', 'REST'
+    ]
 
-  return render( request, 'my_resume.html', {'exp_data': experience_data } )
+
+  return render( request, 'my_resume.html', {'exp_data': experience_data, 'skills_list':skills_list } )
