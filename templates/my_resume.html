@@ -9,7 +9,6 @@
   }
 
   div.r-header {
-    height: 100px;
     display: flex;
     flex-direction: column;
   }
@@ -34,10 +33,6 @@
   div.r-header .address-contact {
     flex: 1;
     font-size: 0.75rem;    
-  }
-
-  div.r-header .address-contact .email {
-    margin-bottom: 5px;
   }
 
   div.main-content {
@@ -73,8 +68,6 @@
   .experience > ul > li  {
     height: auto;
     margin-bottom: 25px;
-    border-bottom: 1px solid #CCC;
-    padding-bottom: 10px;
   }
 
   .duty-list {
@@ -84,8 +77,10 @@
   }
 
   .experience-detail {
-      display: flex;
-      flex-flow: column-reverse;
+    display: flex;
+    flex-flow: column-reverse;
+    border-bottom: 1px solid #CCC;
+    padding-bottom: 20px;
   }
 
   .experience-detail .org-picture img{
@@ -133,15 +128,36 @@
 
   .skill-container {
     margin-bottom: 20px;
-    text-align: justify;
   }
 
-  .skillname {
+  .skillname , .technologies-used div.tech-name{
     background-color: #dfe1ed;
     color: #666 ;
-    padding: 2px;
+    padding: 2px 4px;
     border: solid 1px #CCC;
-    line-height: 2.4rem;
+    display: inline-block;
+    line-height: 1.5rem;
+    margin: 0px 4px 4px 0px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+
+  .address-contact .contact-detail {
+    margin-bottom: 5px;
+  }
+
+  .technologies-used {
+    margin-top: 16px;
+  }
+
+  .technologies-used div.tech-name {
+    font-size: 0.6rem;
+    padding: 2px;
+    text-transform: uppercase;
+    line-height: 1;
+    margin: 0px 6px 6px 0px;
+    background-color: #eee;
+    cursor: default;
   }
 
   @media(max-width: 1199px) {
@@ -167,6 +183,7 @@
     div.r-header {      
       display: flex;
       flex-direction: row;
+      height: 100px;
     }
 
     div.r-header .name-role {
@@ -234,11 +251,11 @@
     }
 
     .experience .year {
-      flex : 1;
+      flex : 2;
     }
 
     .experience-detail {
-      flex: 8 ;
+      flex: 11 ;
     }
 
     .main-wrapper .resume-container {
@@ -268,7 +285,7 @@
 
 
 <div class="container resume-container">
-  <article class="blog-post p-5 mb-5 my-5 shadow-lg">
+  <article class="blog-post p-5 mb-5 my-3 shadow-lg">
     
     <div class="r-header">
       <div class="name-role">
@@ -276,15 +293,16 @@
         <div class="my-role">Web Developer</div>
       </div>
       <div class="address-contact">        
-        <div class="email"><i class="fas fa-envelope-square fa-fw fa-lg me-2"></i>contact@kirbyonweb.dev</div>
-        <div class="address"><i class="fas fa-map-marker-alt fa-fw fa-lg me-2"></i>Makati City, Philippines</div>
+        <div class="email contact-detail"><i class="fas fa-envelope-square fa-fw fa-lg me-2" aria-hidden="true"></i>contact@kirbyonweb.dev</div>
+        <div class="address contact-detail"><i class="fas fa-map-marker-alt fa-fw fa-lg me-2" aria-hidden="true"></i>Makati City, Philippines</div>
+        <div class="linkedin-acct contact-detail"><i class="fab fa-linkedin fa-fw fa-lg me-2" aria-hidden="true"></i><a href="https://www.linkedin.com/in/vincent-agudelo/" title="https://www.linkedin.com/in/vincent-agudelo/">Vincent Agudelo</a></div>
       </div>
     </div> 
     <hr>
   
     <div class="skill-container">
       <h3>SKILLS</h3>
-      {% for skill in skills_list %}<span class="skillname">{{skill}}</span>&nbsp; {% endfor %}
+      {% for skill in skills_list %}<div class="skillname">{{skill}}</div>{% endfor %}
     </div>
     
 
@@ -318,6 +336,11 @@
                     {% endfor%}  
                   </ul>
                 </div>
+                {% if exp.detail.tech %}
+                <div class="technologies-used">
+                  {% for tech in exp.detail.tech %}<div class="tech-name" title="{{tech}}">{{tech}}</div>{% endfor%}
+                </div>
+                {% endif %}
               </div>
               <div class="org-picture">
                 {% if exp.detail.org_picture %}
@@ -338,7 +361,7 @@
         <li>
           <div class="exp-item">
             <div class="year left-col-year">
-              <div class="content">1998 - 2003</div>
+              <div class="content">06/1998 - 10/2003</div>
             </div>
             <div class="experience-detail">
               <div class="content">
