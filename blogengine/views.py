@@ -157,10 +157,10 @@ def about_me(request):
 
 
 @login_required(login_url='login-page')
-@permission_required('blogengine.add_BlogArticle', raise_exception=True)
+@permission_required('blogengine.add_blogarticle', raise_exception=True)
 def create_blog_article(request):
 
-  print ( repr(request.user.is_authenticated) )
+  #print ( repr(request.user.is_authenticated) )
 
   if request.method == "POST" :
     

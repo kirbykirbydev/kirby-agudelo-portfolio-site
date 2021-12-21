@@ -1,5 +1,5 @@
 {% extends 'base.html'%}
-
+{% load static %}
 {% block templatecontent %}
 
 <style>
@@ -195,81 +195,41 @@
     
       <div id="blog-items">
         <ul>
-          <li class="blog-list-item">
-            <div class="content">
-              <div class="article-thumb">
-                <img class="img-fluid post-thumb " src="http://dev.kirbyonweb.ddd/static/uploads/blog_thumbs/n6VoDDX-rHDFiVXFWfW2EhAmFXJPX8RgECCFap7ryv8nvEZqt.jpeg" alt="image">
-              </div>
-              <div class="article-detail">
-                <span class="days-ago">Published 5 days ago</span>
-                <div class="article-title">this is a blog article with a long titlearticle with a long titlearticle with a long title</div>
-                <div class="blog-tags">
-                  <span class="tag"><a href="#">Linux</a></span><span class="tag"><a href="#">Domain Names</a></span><span class="tag"><a href="#">Web Development</a></span>
-                </div>
-                <div class="blog-short-preview">this is the preview for the blog, blah blah. what happened to me today this is the preview for the blog, blah blah. what happened to me today d to me today this is the preview for t preview for the blog, blah blah preview for the blog, blah blah</div>
-                <a href="#" class="readmore">read more &rightarrow; </a>
-    
-    
-    
-              </div>
-            </div>
-          </li>
-    
-          <li class="blog-list-item">
-            <div class="content">
-              <div class="article-thumb">
-                <img class="img-fluid post-thumb " src="http://dev.kirbyonweb.ddd/static/uploads/blog_thumbs/n6VoDDX-rHDFiVXFWfW2EhAmFXJPX8RgECCFap7ryv8nvEZqt.jpeg" alt="image">
-              </div>
-              <div class="article-detail">
-                <span class="days-ago">5 days ago</span>
-                <div class="article-title">this is a blog article with a long titlearticle with a long titlearticle with a long title</div>
-                <div class="blog-tags">
-                  <span class="tag"><a href="#">Linux</a></span><span class="tag"><a href="#">Domain Names</a></span><span class="tag"><a href="#">Web Development</a></span>
-                </div>
-                <div class="blog-short-preview">this is the preview for the blog, blah blah. what happened to me today this is the preview for the blog, blah blah. what happened to me today d to me today this is the preview for t preview for the blog, blah blah preview for the blog, blah blah</div>
-                <a href="#" class="readmore">read more</a>
-    
-    
-    
-              </div>
-            </div>
-          </li> 
+
+          {% for a in articles %}
+
+          {%  url 'view_article' a.id as blog_url %}
+          {% if a.seo_url %}
+            {%  url 'view_article_by_slug' a.seo_url  as blog_url %}
+          {% endif %}
 
           <li class="blog-list-item">
             <div class="content">
               <div class="article-thumb">
-                <img class="img-fluid post-thumb " src="http://dev.kirbyonweb.ddd/static/uploads/blog_thumbs/n6VoDDX-rHDFiVXFWfW2EhAmFXJPX8RgECCFap7ryv8nvEZqt.jpeg" alt="image">
+                <a class="text-link" href="{{blog_url}}"><img class="img-fluid post-thumb " src="{% static '/uploads/' %}{{a.thumbnail_upload}}" alt="image"></a>
               </div>
               <div class="article-detail">
-                <span class="days-ago">5 days ago</span>
-                <div class="article-title">this is a blog article with a long titlearticle with a long titlearticle with a long title</div>
+                <span class="days-ago">Published {{ a.format_published_days_ago }}</span>
+                <div class="article-title"><a class="text-link" href="{{blog_url}}">{{a.title}}</a></div>
+                
+                
+                
                 <div class="blog-tags">
-                  <span class="tag"><a href="#">Linux</a></span><span class="tag"><a href="#">Domain Names</a></span><span class="tag"><a href="#">Web Development</a></span>
+                  {% if a.tags %}
+                {% for t in a.tags.all %}
+                <span class="tag"><a href="{% url 'articles-by-tag' t.url_slug  1 %}">{{t}}</a> 
+                {% endfor%}
+                {% endif %}
+                  <!-- <span class="tag"><a href="#">Linux</a></span><span class="tag"><a href="#">Domain Names</a></span><span class="tag"><a href="#">Web Development</a></span> -->
                 </div>
-                <div class="blog-short-preview">this is the preview for the blog, blah blah. what happened to me today this is the preview for the blog, blah blah. what happened to me today d to me today this is the preview for t preview for the blog, blah blah preview for the blog, blah blah</div>
-                <a href="#" class="readmore">read more</a>
-    
-    
-    
-              </div>
-            </div>
-          </li>          
-    
-          <li class="blog-list-item">
-            <div class="content">
-              <div class="article-thumb">
-                <img class="img-fluid post-thumb " src="http://dev.kirbyonweb.ddd/static/uploads/blog_thumbs/n6VoDDX-rHDFiVXFWfW2EhAmFXJPX8RgECCFap7ryv8nvEZqt.jpeg" alt="image">
-              </div>
-              <div class="article-detail">
-                <span class="days-ago">5 days ago</span>
-                <span class="article-title">this is a blog article with a long title</span>
-                <div class="blog-short-preview">this is the preview for the blog, blah blah. what happened to me today this is the preview for the blog, blah blah. what happened to me today d to me today this is the preview for t</div>
-                <a href="#" class="readmore">read more</a>
+                <div class="blog-short-preview">
+                  {{a.preview|safe}}
+                </div>
+                <a class="text-link" href="{{blog_url}}">Read more &rarr;</a>
               </div>
             </div>
           </li>
-    
-    
+          {% endfor %}    
         </ul>
       </div>
     

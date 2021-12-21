@@ -1,10 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponseNotFound
 
+from blogengine.models import BlogArticle
+
 
 def view_homepage(request):
 
-  return render( request, 'sitehome.html' )
+  # prepare list of latest blog entries
+
+  articles = BlogArticle.get_latest_articles()
+
+  return render( request, 'sitehome.html', {'articles' : articles } )
 
 
 def view_resume(request):
